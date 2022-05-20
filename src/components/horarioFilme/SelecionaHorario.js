@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Footer from "../footer/Footer.js";
 import Topo from "../topo/Topo.js";
 
 export default function SelecionaHorario(){
@@ -19,6 +20,11 @@ export default function SelecionaHorario(){
                     <FilmeHora>19:00</FilmeHora>
                 </ContainerHorario>
             </Container>
+
+            <Footer img="https://images-na.ssl-images-amazon.com/images/I/812egX6Xv5L.jpg">
+            
+                <p>Nome do filme</p>
+            </Footer>
         </>
     )
 }

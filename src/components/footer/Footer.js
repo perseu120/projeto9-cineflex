@@ -5,7 +5,7 @@ export default function Footer(props) {
         <RodaPe>
 
             <ContainerImg>
-                <ImagemFilme />
+                <ImagemFilme src={props.img} alt="" />
             </ContainerImg>
 
 
@@ -28,18 +28,21 @@ const ContainerImg = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 14px;
 `
 const RodaPe = styled.footer`
     position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
-    width: 375px;
+    width: 100hv;
     height: 117px;
     background: #DFE6ED;
     border: 1px solid #9EADBA;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+ 
 `
