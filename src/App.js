@@ -1,8 +1,16 @@
+import Header from "./components/header/Header.js";
+import SelecionaHorario from "./components/horarioFilme/SelecionaHorario.js";
+import SelecionaFilme from "./components/selecionaFilme/SelecionaFilme.js";
+import Topo from "./components/topo/Topo.js";
 
 
 export default function App(){
 
     return(
-        <h1>teste se esta funcionando</h1>
+        <main>
+            <Header/>
+            <SelecionaHorario/>
+
+        </main>
     );
 }
