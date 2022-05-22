@@ -1,9 +1,12 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom";
 
-export default function Filme(){
+export default function Filme({id, posterURL}){
     return(
         <Container>
-            <ImagemFilme src="https://images-na.ssl-images-amazon.com/images/I/812egX6Xv5L.jpg" alt="" />
+            <Link to={`/horario/${id}`}>
+                <ImagemFilme key={id} src={posterURL} alt="" /> 
+            </Link>
         </Container>
     )
 }

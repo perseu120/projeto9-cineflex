@@ -1,17 +1,34 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 import Header from "./components/header/Header.js";
 import SelecionaHorario from "./components/horarioFilme/SelecionaHorario.js";
 import SelecionaAssento from "./components/selecionaAssento/selecionaAssento.js";
 import SelecionaFilme from "./components/selecionaFilme/SelecionaFilme.js";
-import Topo from "./components/topo/Topo.js";
+
 
 
 export default function App(){
 
     return(
-        <main>
+        
+        <Main>
+            <BrowserRouter>
             <Header/>
-            <SelecionaAssento/>
+            <Routes>
 
-        </main>
+                <Route path="/" element={<SelecionaFilme/> } />
+                <Route path="/horario/:id" element={<SelecionaHorario/> } />
+                <Route path="/assento/:id" element={ <SelecionaAssento />} />
+                
+            </Routes>
+        
+        </BrowserRouter>
+            
+
+        </Main>
     );
 }
+
+const Main = styled.main`
+    margin-bottom: 125px;
+`

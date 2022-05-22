@@ -1,64 +1,53 @@
+import axios from "axios";
+import { useParams, } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../footer/Footer.js";
 import Topo from "../topo/Topo.js";
 
-export default function SelecionaAssento(){
+export default function SelecionaAssento() {
 
-    return(
+    const { id } = useParams()
+
+    const [dia, setDia] = useState([]);
+    const [filme, setFilme] = useState([]);
+    const [assentos, setAssentos] = useState([]);
+    const [hora, setHora] = useState("");
+
+    useEffect(() => {
+
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${id}/seats`)
+
+        promise.then((response) => {
+
+            setDia(response.data.day);
+            setFilme(response.data.movie);
+            setAssentos(response.data.seats);
+            setHora(response.data.name);
+        }
+        )
+        promise.catch(err =>
+            console.log(err)
+        )
+
+    }, [])
+    console.log(assentos)
+    function renderizaAssento() {
+
+        return (
+            assentos.map((assento) => (
+                assento.isAvailable ? <Assento key={assento.id} cor={"#C3CFD9"}>{assento.name}</Assento> : <Assento key={assento.id} cor={"#FBE192"}>{assento.name}</Assento>
+            ))
+        )
+
+    }
+
+    return (
         <>
             <Topo>Selecione o(s) Assento(s)</Topo>
 
             <Assentos>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#FBE192"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#8DD7CF"}>01</Assento>
-                <Assento cor={"#8DD7CF"}>01</Assento>
-                <Assento cor={"#8DD7CF"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
-                <Assento cor={"#C3CFD9"}>01</Assento>
+                {renderizaAssento()}
             </Assentos>
 
             <ContainerLegenda>
@@ -81,19 +70,19 @@ export default function SelecionaAssento(){
 
             <ContainerForm>
                 <form>
-                    <Label for="Nome">Nome do comprador:</Label>
+                    <Label htmlFor="Nome">Nome do comprador:</Label>
                     <Input id="Nome" type="text" placeholder="Digite seu nome..."></Input>
-                    <Label for="CPF">CPF do comprador:</Label>
+                    <Label htmlFor="CPF">CPF do comprador:</Label>
                     <Input id="CPF" type="text" placeholder="Digite seu CPF..."></Input>
-                    
+
                     <Buttom type="submit">Reservar assento</Buttom>
                 </form>
             </ContainerForm>
-            
 
-            <Footer img="https://images-na.ssl-images-amazon.com/images/I/812egX6Xv5L.jpg">
-            
-                <p>Nome do filme <br/> dya-feira - 15:00</p>
+
+            <Footer img={filme.posterURL}>
+
+                <p> {filme.title} <br /> {dia.weekday} - {hora}</p>
             </Footer>
 
         </>
@@ -172,11 +161,6 @@ const Buttom = styled.button`
     margin: 10px auto 0px auto;
     
 `
-const Form = styled.form`
-    
-    
-`
-
 const Input = styled.input`
     width: 327px;
     height: 51px;
