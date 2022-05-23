@@ -13,6 +13,14 @@ export default function SelecionaAssento() {
     const [filme, setFilme] = useState([]);
     const [assentos, setAssentos] = useState([]);
     const [hora, setHora] = useState("");
+    const [idSelecionado, setIdSelecionado] = useState([]);
+    const [estaSelecionado, setEstaSelecionado] = useState(false);
+
+    const ingressos  = {
+        ids: [],
+        name: "Fulano",
+        cpf: "12345678900"
+    }
 
     useEffect(() => {
 
@@ -31,17 +39,22 @@ export default function SelecionaAssento() {
         )
 
     }, [])
-    console.log(assentos)
-    function renderizaAssento() {
+    
+    function selecionado(id){
 
-        return (
-            assentos.map((assento) => (
-                assento.isAvailable ? <Assento key={assento.id} cor={"#C3CFD9"}>{assento.name}</Assento> : <Assento key={assento.id} cor={"#FBE192"}>{assento.name}</Assento>
-            ))
-        )
-
+        console.log(id);
+        setIdSelecionado([...idSelecionado, id]);
+        console.log(idSelecionado);
     }
 
+    function renderizaAssento() {
+        return (
+            assentos.map((assento) => (
+                assento.isAvailable ? <Assento onClick={ ()=>(selecionado(assento.id))} key={assento.id} cor={"#C3CFD9"} >{assento.name}</Assento> : <Assento onClick={ ()=>(alert("Esse assento não está disponível") )} key={assento.id} cor={"#FBE192"}>{assento.name}</Assento>
+            ))
+        )
+    }
+    
     return (
         <>
             <Topo>Selecione o(s) Assento(s)</Topo>

@@ -37,7 +37,7 @@ export default function SelecionaHorario() {
                     <ContainerHorario>
 
                         {dias.showtimes.map((hora) => (
-                            <Link to={`/assento/${hora.id}`}>
+                            <Link to={`/assentos/${hora.id}`}>
                                 <FilmeHora key={hora.id}>{hora.name}</FilmeHora>
                             </Link>
                         

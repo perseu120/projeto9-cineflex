@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Filme({id, posterURL}){
     return(
         <Container>
-            <Link to={`/horario/${id}`}>
+            <Link to={`/sessoes/${id}`}>
                 <ImagemFilme key={id} src={posterURL} alt="" /> 
             </Link>
         </Container>
