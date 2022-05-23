@@ -1,29 +1,61 @@
 import styled from "styled-components";
 import Footer from "../footer/Footer.js";
 import Topo from "../topo/Topo.js";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-export default function SelecionaHorario(){
-    return(
+export default function SelecionaHorario() {
+
+    const {id }= useParams();
+
+    const [sessoes, setSessoes] = useState([]);
+    const [diasSemana, setDiasSemana] = useState([]);
+
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${id}/showtimes`)
+
+        promise.then((response) => {
+
+            setSessoes(response.data);
+            setDiasSemana(response.data.days);
+            console.log(response.data)
+
+        })
+        promise.catch((err) => console.log(err))
+
+    }, []);
+
+
+    function diasEHorarios() {
+
+
+        return (
+            diasSemana.map(dias => (
+                <Container>
+                    <FilmeData key={dias.id}>{dias.weekday} - {dias.date}</FilmeData>
+                    <ContainerHorario>
+
+                        {dias.showtimes.map((hora) => (
+                            <Link to={`/assentos/${hora.id}`}>
+                                <FilmeHora key={hora.id}>{hora.name}</FilmeHora>
+                            </Link>
+                        
+                    ))}
+                    </ContainerHorario>
+                </Container>
+            ))
+        )
+    }
+
+    return (
         <>
             <Topo>Selecione o Horário</Topo>
-            <Container>
-                <FilmeData>Quinta-feira - 24/06/2021</FilmeData>
-                <ContainerHorario>
-                    <FilmeHora>15:00</FilmeHora>
-                    <FilmeHora>19:00</FilmeHora>
-                </ContainerHorario>
 
-                <FilmeData>Sexta-feira - 24/06/2021</FilmeData>
+            {diasEHorarios()}
 
-                <ContainerHorario>
-                    <FilmeHora>15:00</FilmeHora>
-                    <FilmeHora>19:00</FilmeHora>
-                </ContainerHorario>
-            </Container>
-
-            <Footer img="https://images-na.ssl-images-amazon.com/images/I/812egX6Xv5L.jpg">
-            
-                <p>Nome do filme</p>
+            <Footer img={sessoes.posterURL} nome={sessoes.title}>
+                <p>{sessoes.title}</p>
             </Footer>
         </>
     )
@@ -35,11 +67,13 @@ const ContainerHorario = styled.div`
 
 const Container = styled.div`
     margin-left: 24px;
+    
 `
 const FilmeHora = styled.h4`
     width: 83px;
     height: 43px;
     margin-right: 8px;
+    margin-bottom: 23px;
 
     background: #E8833A;
     border-radius: 3px;
@@ -58,6 +92,7 @@ const FilmeData = styled.h4`
     display: flex;
     align-items: center;
     letter-spacing: 0.02em;
+    margin-bottom: 23px;
 
     color: #293845;
 `
