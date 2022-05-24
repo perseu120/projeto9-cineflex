@@ -10,15 +10,7 @@ import Sucesso from "./components/sucesso/Sucesso.js";
 
 export default function App() {
 
-    const ingresso ={
-        nomeFilme : "",
-        dataHora: "",
-        assento: "",
-        nomeComprador:"",
-        cpf: ""
-    }
-
-    const [final, setFinal]= useState(ingresso);
+    const [final, setFinal]= useState(null);
 
 
 
@@ -31,8 +23,8 @@ export default function App() {
 
                     <Route path="/" element={<SelecionaFilme />} />
                     <Route path="/sessoes/:id" element={<SelecionaHorario />} />
-                    <Route path="/assentos/:id" element={<SelecionaAssento final={final} setFinal={setFinal} />} />
-                    <Route path="/sucesso" element={<Sucesso final={final} setFinal={setFinal} />} />
+                    <Route path="/assentos/:id" element={<SelecionaAssento finalizar={(final)=>{setFinal(final)}} />} />
+                    <Route path="/sucesso" element={<Sucesso final={final}/>} />
                 </Routes>
 
             </BrowserRouter>

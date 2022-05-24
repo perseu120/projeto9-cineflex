@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useParams, } from "react-router-dom";
+import { useNavigate, useParams, } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../footer/Footer.js";
 import Topo from "../topo/Topo.js";
 import Assento from "../assento/Assento.js";
 
-export default function SelecionaAssento({final, setFinal}) {
+export default function SelecionaAssento({ finalizar }) {
 
     const { id } = useParams()
 
@@ -19,8 +19,8 @@ export default function SelecionaAssento({final, setFinal}) {
     const [nome, setNome] = useState("");
     const [cpf, setCpf] = useState("");
 
-    
 
+    const variavelNavegaPGSucesso= useNavigate();
     const ingressos = {
         ids: idSelecionado,
         name: nome,
@@ -45,12 +45,12 @@ export default function SelecionaAssento({final, setFinal}) {
 
     }, [])
 
-  //  setFinal({
-   //     nomeFilme : filme.title,
-  //      dataHora: `${dia.weekday} - ${hora}`,
- //       assento: `${assentos.name}`,
-        //nomeComprador:nome,
-      //  cpf: cpf
+    //  setFinal({
+    //     nomeFilme : filme.title,
+    //      dataHora: `${dia.weekday} - ${hora}`,
+    //       assento: `${assentos.name}`,
+    //nomeComprador:nome,
+    //  cpf: cpf
     //})
 
     return (
@@ -60,7 +60,7 @@ export default function SelecionaAssento({final, setFinal}) {
             <Assentos>
                 {assentos.map((assento) => (
                     assento.isAvailable ?
-                        <Assento id={assento.id} idSelecionado={idSelecionado} setIdSelecionado={setIdSelecionado} key={assento.id} name={assento.name}  cor={"#C3CFD9"} >
+                        <Assento id={assento.id} idSelecionado={idSelecionado} setIdSelecionado={setIdSelecionado} key={assento.id} name={assento.name} cor={"#C3CFD9"} >
 
                         </Assento>
                         : <Assento name={assento.name} id={assento.id} key={assento.id} cor={"#FBE192"}>
@@ -88,19 +88,29 @@ export default function SelecionaAssento({final, setFinal}) {
             </ContainerLegenda>
 
             <ContainerForm>
-                <form onSubmit={(e)=>{
+                <form onSubmit={(e) => {
                     e.preventDefault();
-                    console.log(ingressos)
+
                     const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", ingressos)
-                    
-                    promise.then(
-                       response=> console.log(response)
-                    )
+
+                    promise.then(response => {
+
+                        finalizar({
+                            nomeFilme: filme.title,
+                            dataHora: `${dia.weekday} - ${hora}`,
+                            assento: `${assentos.name}`,
+                            nomeComprador: nome,
+                            cpf: cpf
+                        })
+                        console.log("okokok");
+                        variavelNavegaPGSucesso("/sucesso");
+                        
+                    })
                 }}>
                     <Label htmlFor="Nome">Nome do comprador:</Label>
-                    <Input onChange={(e)=> setNome(e.target.value)} value={nome} id="Nome" type="text" placeholder="Digite seu nome..."></Input>
+                    <Input onChange={(e) => setNome(e.target.value)} value={nome} id="Nome" type="text" placeholder="Digite seu nome..."></Input>
                     <Label htmlFor="CPF" >CPF do comprador:</Label>
-                    <Input onChange={(e)=> setCpf(e.target.value)} value={cpf} id="CPF" type="text" placeholder="Digite seu CPF..."></Input>
+                    <Input onChange={(e) => setCpf(e.target.value)} value={cpf} id="CPF" type="text" placeholder="Digite seu CPF..."></Input>
 
                     <Buttom type="submit">Reservar assento</Buttom>
                 </form>
